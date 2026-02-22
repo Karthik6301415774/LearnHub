@@ -1,0 +1,250 @@
+.course-content-page {
+    display: flex;
+    min-height: calc(100vh - 64px);
+    background: #0f0c29;
+    color: white;
+}
+
+.cc-sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.cc-sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-back-small {
+    background: none;
+    border: none;
+    color: #a78bfa;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0;
+    margin-bottom: 0.75rem;
+}
+
+.cc-sidebar-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.progress-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.cc-progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.cc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7c3aed, #2563eb);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.progress-info span {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.cc-sections-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.cc-section-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.88rem;
+    transition: background 0.2s, color 0.2s;
+    margin-bottom: 0.25rem;
+}
+
+.cc-section-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.cc-section-btn.active {
+    background: rgba(167, 139, 250, 0.15);
+    color: #a78bfa;
+}
+
+.cc-section-btn.done {
+    color: #10b981;
+}
+
+.section-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.cc-section-btn.done .section-num {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.cc-section-btn.active .section-num {
+    background: rgba(167, 139, 250, 0.3);
+}
+
+.cc-main {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.cc-section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.cc-video-wrap {
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.cc-video {
+    width: 100%;
+    max-height: 480px;
+    display: block;
+}
+
+.cc-no-video {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.cc-description {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.cc-description h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.cc-description p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.cc-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-complete {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 0.95rem;
+}
+
+.btn-complete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.btn-nav {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 10px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn-nav:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.cc-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    background: #0f0c29;
+    color: white;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.btn-back {
+    background: rgba(167, 139, 250, 0.2);
+    border: 1px solid #a78bfa;
+    color: #a78bfa;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .course-content-page {
+        flex-direction: column;
+    }
+
+    .cc-sidebar {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+}
