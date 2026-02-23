@@ -23,7 +23,7 @@ export default function AdminHome() {
             setStats(statsRes.data);
             setUsers(usersRes.data.filter(u => u.type !== 'admin'));
             setEnrollments(enrollRes.data);
-        } catch (err) {
+        } catch {
             toast.error('Failed to load admin data');
         } finally {
             setLoading(false);
@@ -36,7 +36,7 @@ export default function AdminHome() {
             await axiosInstance.delete(`/api/admin/users/${id}`);
             toast.success('User deleted');
             fetchData();
-        } catch (err) {
+        } catch {
             toast.error('Failed to delete user');
         }
     };

@@ -20,7 +20,7 @@ export default function TeacherHome() {
         try {
             const { data } = await axiosInstance.get('/api/admin/my-courses');
             setCourses(data);
-        } catch (err) {
+        } catch {
             toast.error('Failed to load courses');
         } finally {
             setLoading(false);

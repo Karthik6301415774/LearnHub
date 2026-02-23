@@ -16,13 +16,14 @@ export default function ManageCourse() {
 
     useEffect(() => {
         fetchCourse();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [courseId]);
 
     const fetchCourse = async () => {
         try {
             const { data } = await axiosInstance.get(`/api/users/courses/${courseId}`);
             setCourse(data);
-        } catch (err) {
+        } catch {
             toast.error('Failed to fetch course');
         } finally {
             setLoading(false);
@@ -46,7 +47,7 @@ export default function ManageCourse() {
             setVideo(null);
             setShowForm(false);
             toast.success('Section added!');
-        } catch (err) {
+        } catch {
             toast.error('Failed to add section');
         } finally {
             setAdding(false);
@@ -59,7 +60,7 @@ export default function ManageCourse() {
             const { data } = await axiosInstance.delete(`/api/admin/courses/${courseId}/sections/${sectionId}`);
             setCourse(data);
             toast.success('Section deleted');
-        } catch (err) {
+        } catch {
             toast.error('Delete failed');
         }
     };

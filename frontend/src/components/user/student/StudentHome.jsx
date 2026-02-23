@@ -18,7 +18,7 @@ export default function StudentHome() {
         try {
             const { data } = await axiosInstance.get('/api/users/my-courses');
             setEnrollments(data);
-        } catch (err) {
+        } catch {
             toast.error('Failed to load courses');
         } finally {
             setLoading(false);

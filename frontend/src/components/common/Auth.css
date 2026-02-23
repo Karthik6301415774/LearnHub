@@ -20,8 +20,15 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .auth-logo {
@@ -44,7 +51,7 @@
 }
 
 .auth-logo p {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.85rem;
   margin: 0;
 }
@@ -70,7 +77,7 @@
 }
 
 .form-group label {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -78,8 +85,8 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   padding: 0.75rem 1rem;
   color: white;
@@ -93,7 +100,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: #a78bfa;
-  background: rgba(167,139,250,0.1);
+  background: rgba(167, 139, 250, 0.1);
 }
 
 .form-group select option {
@@ -137,7 +144,7 @@
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -145,13 +152,15 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 1.25rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.9rem;
 }
 

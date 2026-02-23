@@ -16,6 +16,7 @@ export default function CourseDetail() {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const fetchData = async () => {
@@ -27,7 +28,7 @@ export default function CourseDetail() {
                 const found = myCoursesRes.data.find((e) => e.courseId?._id === id);
                 setEnrolled(!!found);
             }
-        } catch (err) {
+        } catch {
             toast.error('Failed to load course');
         } finally {
             setLoading(false);

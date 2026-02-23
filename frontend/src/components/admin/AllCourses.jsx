@@ -15,7 +15,7 @@ export default function AllCourses() {
             // Reusing the public endpoint for browsing, but showing table view
             const { data } = await axiosInstance.get('/api/users/courses');
             setCourses(data);
-        } catch (err) {
+        } catch {
             toast.error('Failed to load courses');
         } finally {
             setLoading(false);
@@ -28,7 +28,7 @@ export default function AllCourses() {
             await axiosInstance.delete(`/api/admin/courses/${id}`);
             toast.success('Course deleted');
             fetchCourses();
-        } catch (err) {
+        } catch {
             toast.error('Failed to delete course');
         }
     };

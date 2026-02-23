@@ -1,0 +1,32 @@
+
+D:\LearnHub\frontend\src\components\admin\AdminHome.jsx
+  26:18  error  '_err' is defined but never used  no-unused-vars
+  39:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\admin\AllCourses.jsx
+  18:18  error  '_err' is defined but never used  no-unused-vars
+  31:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\common\CourseDetail.jsx
+  31:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\user\student\CourseContent.jsx
+  10:11  error  Unexpected empty object pattern   no-empty-pattern
+  34:18  error  '_err' is defined but never used  no-unused-vars
+  52:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\user\student\StudentHome.jsx
+  21:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\user\teacher\ManageCourse.jsx
+  26:18  error  '_err' is defined but never used  no-unused-vars
+  50:18  error  '_err' is defined but never used  no-unused-vars
+  63:18  error  '_err' is defined but never used  no-unused-vars
+
+D:\LearnHub\frontend\src\components\user\teacher\TeacherHome.jsx
+  23:18  error  '_err' is defined but never used  no-unused-vars
+  40:18  error  '_err' is defined but never used  no-unused-vars
+  41:25  error  'err' is not defined              no-undef
+
+✖ 15 problems (15 errors, 0 warnings)
+

@@ -15,6 +15,7 @@ export default function Certificate() {
         axiosInstance.get(`/api/users/courses/${courseId}`)
             .then(({ data }) => setCourse(data))
             .catch(() => navigate('/student'));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [courseId]);
 
     const handleDownload = () => {

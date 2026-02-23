@@ -15,6 +15,7 @@ export default function AllCourses() {
 
     useEffect(() => {
         fetchCourses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, category]);
 
     const fetchCourses = async () => {

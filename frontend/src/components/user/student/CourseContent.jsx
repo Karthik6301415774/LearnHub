@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../common/AxiosInstance';
-import { useAuth } from '../../../context/AuthContext';
+// removed useAuth import
 import { toast } from 'react-toastify';
 import './CourseContent.css';
 
 export default function CourseContent() {
     const { courseId } = useParams();
-    const { user } = useAuth();
+    // useAuth no longer extracted
     const navigate = useNavigate();
     const [course, setCourse] = useState(null);
     const [enrollment, setEnrollment] = useState(null);
@@ -16,6 +16,7 @@ export default function CourseContent() {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [courseId]);
 
     const fetchData = async () => {
@@ -30,7 +31,7 @@ export default function CourseContent() {
                 setEnrollment(enroll);
                 setCurrentSection(enroll.lastSectionIndex || 0);
             }
-        } catch (err) {
+        } catch {
             toast.error('Failed to load course');
         } finally {
             setLoading(false);
@@ -48,7 +49,7 @@ export default function CourseContent() {
             if (currentSection < course.sections.length - 1) {
                 setCurrentSection((prev) => prev + 1);
             }
-        } catch (err) {
+        } catch {
             toast.error('Failed to update progress');
         }
     };
