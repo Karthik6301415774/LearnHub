@@ -155,6 +155,8 @@ Application URLs:
 ## UI Screens
 
 * **Figure 3: LearnHub Landing Page**
+* <img width="1920" height="1008" alt="image" src="https://github.com/user-attachments/assets/ae20f281-fa3b-4387-bc24-96c67056b564" />
+
 <img width="1920" height="1008" alt="Screenshot 2026-02-23 143024" src="https://github.com/user-attachments/assets/19711310-b88f-41e8-a4a7-37e70e7b54c3" />
 
 * **Figure 4: User Registration Page**
