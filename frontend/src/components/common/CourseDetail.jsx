@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axiosInstance from './AxiosInstance';
+import axiosInstance, { BACKEND_URL } from './AxiosInstance';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 import './CourseDetail.css';
@@ -69,7 +69,7 @@ export default function CourseDetail() {
                 </div>
                 <div className="cd-enroll-card">
                     {course.thumbnail ? (
-                        <img src={`http://localhost:5000${course.thumbnail}`} alt={course.C_title} className="cd-thumb" />
+                        <img src={`${BACKEND_URL}${course.thumbnail}`} alt={course.C_title} className="cd-thumb" />
                     ) : (
                         <div className="cd-thumb-placeholder">🎓</div>
                     )}

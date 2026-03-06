@@ -61,6 +61,11 @@ export default function Login() {
                             onChange={handleChange}
                             required
                         />
+                        <div style={{ textAlign: 'right', marginTop: '10px' }}>
+                            <Link to="/forgot-password" style={{ color: '#00d2ff', fontSize: '14px', textDecoration: 'none' }}>
+                                Forgot Password?
+                            </Link>
+                        </div>
                     </div>
                     <button type="submit" className="btn-primary" disabled={loading}>
                         {loading ? <span className="spinner"></span> : 'Sign In'}

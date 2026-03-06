@@ -1,6 +1,9 @@
 const User = require('../schemas/userModel');
 const Course = require('../schemas/courseModel');
 const EnrolledCourse = require('../schemas/enrolledCourseModel');
+const LiveSession = require('../schemas/liveSessionModel');
+const Quiz = require('../schemas/quizModel');
+const PracticeSession = require('../schemas/practiceSessionModel');
 const jwt = require('jsonwebtoken');
 
 // Generate JWT
@@ -11,16 +14,21 @@ const generateToken = (id) =>
 // @route  POST /api/users/register
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, type } = req.body;
+        const { name, email, password, type, phone, dob } = req.body;
         const exists = await User.findOne({ email });
         if (exists) return res.status(400).json({ message: 'Email already registered' });
 
-        const user = await User.create({ name, email, password, type: type || 'student' });
+        // Students are auto-approved; teachers need admin approval
+        const userType = type || 'student';
+        const isApproved = userType !== 'teacher'; // students/admin = true, teachers = false
+
+        const user = await User.create({ name, email, password, phone, dob, type: userType, isApproved });
         res.status(201).json({
             _id: user._id,
             name: user.name,
             email: user.email,
             type: user.type,
+            isApproved: user.isApproved,
             token: generateToken(user._id),
         });
     } catch (err) {
@@ -37,11 +45,16 @@ const loginUser = async (req, res) => {
         if (!user || !(await user.matchPassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
+        // Block unapproved teachers
+        if (user.type === 'teacher' && !user.isApproved) {
+            return res.status(403).json({ message: 'Your teacher account is pending admin approval. Please wait for approval.' });
+        }
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
             type: user.type,
+            isApproved: user.isApproved,
             token: generateToken(user._id),
         });
     } catch (err) {
@@ -115,7 +128,7 @@ const enrollCourse = async (req, res) => {
     }
 };
 
-// @desc   Pay for a course
+// @desc   Pay for a course (submit payment proof, awaiting admin approval)
 // @route  POST /api/users/pay/:courseId
 const payCourse = async (req, res) => {
     try {
@@ -129,28 +142,57 @@ const payCourse = async (req, res) => {
         if (!enrollment) return res.status(404).json({ message: 'Not enrolled. Enroll first.' });
         if (enrollment.isPaid) return res.status(400).json({ message: 'Already paid' });
 
-        enrollment.isPaid = true;
-        await enrollment.save();
-
         const CoursePayment = require('../schemas/coursePaymentModel');
+
+        // Check if a pending payment already exists (prevent duplicates)
+        const existing = await CoursePayment.findOne({
+            studentId: req.user._id,
+            courseId: course._id,
+            status: 'pending',
+        });
+        if (existing) return res.status(400).json({ message: 'Payment already submitted and waiting for admin approval.' });
+
+        const { transactionId } = req.body;
+
+        // Create a PENDING payment record — admin must approve it
         await CoursePayment.create({
             studentId: req.user._id,
             courseId: course._id,
             amount: course.C_price,
+            status: 'pending',
+            transactionId: transactionId || `UPI-${Date.now()}`,
         });
 
-        res.json({ message: 'Payment successful', enrollment });
+        // Do NOT mark isPaid yet — admin must approve
+        res.json({ message: 'Payment submitted! Awaiting admin approval.' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// @desc   Get enrolled courses for student
+// @desc   Get enrolled courses for student (with payment status)
 // @route  GET /api/users/my-courses
 const getMyCourses = async (req, res) => {
     try {
+        const CoursePayment = require('../schemas/coursePaymentModel');
         const enrollments = await EnrolledCourse.find({ studentId: req.user._id }).populate('courseId');
-        res.json(enrollments);
+
+        // For each enrollment, check if there is a pending/failed payment record
+        const enriched = await Promise.all(enrollments.map(async (e) => {
+            const obj = e.toObject();
+            if (e.courseId?.C_price > 0 && !e.isPaid) {
+                const payment = await CoursePayment.findOne({
+                    studentId: req.user._id,
+                    courseId: e.courseId._id,
+                }).sort({ createdAt: -1 });
+                obj.paymentStatus = payment?.status || null; // 'pending', 'failed', or null
+            } else {
+                obj.paymentStatus = e.isPaid ? 'completed' : null;
+            }
+            return obj;
+        }));
+
+        res.json(enriched);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -185,6 +227,91 @@ const updateProgress = async (req, res) => {
     }
 };
 
+// @desc   Generate OTP for password reset
+// @route  POST /api/users/forgot-password
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        // Generate a 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        user.resetOtp = otp;
+        user.resetOtpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+        await user.save();
+
+        // Normally we would send an SMS/Email here. 
+        // For development, we return the OTP to easily simulate it.
+        res.json({ message: 'OTP sent to your email/phone successfully', _dev_otp: otp });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// @desc   Verify OTP
+// @route  POST /api/users/verify-otp
+const verifyOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        if (user.resetOtp !== otp || Date.now() > user.resetOtpExpires) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        }
+
+        res.json({ message: 'OTP verified successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// @desc   Reset Password
+// @route  POST /api/users/reset-password
+const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        if (user.resetOtp !== otp || Date.now() > user.resetOtpExpires) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        }
+
+        user.password = newPassword;
+        user.resetOtp = undefined;
+        user.resetOtpExpires = undefined;
+        await user.save();
+
+        res.json({ message: 'Password reset successful. You can now login.' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// @desc   Get extra features (Live Session, Quizzes, Practice) for a specific enrolled course
+// @route  GET /api/users/courses/:courseId/extras
+const getCourseExtras = async (req, res) => {
+    try {
+        const courseId = req.params.courseId;
+
+        // Verify enrollment
+        const enrollment = await EnrolledCourse.findOne({ studentId: req.user._id, courseId });
+        if (!enrollment) return res.status(403).json({ message: 'Not enrolled in this course' });
+
+        const [liveSessions, quizzes, practices] = await Promise.all([
+            LiveSession.find({ courseId }).sort({ scheduledAt: 1 }),
+            Quiz.find({ courseId }).sort({ createdAt: 1 }),
+            PracticeSession.find({ courseId }).sort({ dueDate: 1 }),
+        ]);
+
+        res.json({ liveSessions, quizzes, practices });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -195,4 +322,8 @@ module.exports = {
     payCourse,
     getMyCourses,
     updateProgress,
+    forgotPassword,
+    verifyOtp,
+    resetPassword,
+    getCourseExtras,
 };

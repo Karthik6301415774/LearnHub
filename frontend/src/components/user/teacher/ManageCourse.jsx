@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../common/AxiosInstance';
 import { toast } from 'react-toastify';
+import QuizPracticeManager from './QuizPracticeManager';
 import './ManageCourse.css';
 
 export default function ManageCourse() {
@@ -160,6 +161,10 @@ export default function ManageCourse() {
                     </div>
                 )}
             </div>
+
+            <hr style={{ margin: '3rem 0', borderColor: 'rgba(255,255,255,0.1)' }} />
+
+            <QuizPracticeManager courseId={courseId} />
         </div>
     );
 }

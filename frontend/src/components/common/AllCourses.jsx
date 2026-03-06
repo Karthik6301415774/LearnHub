@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import axiosInstance from './AxiosInstance';
+import axiosInstance, { BACKEND_URL } from './AxiosInstance';
 import './AllCourses.css';
 
 export default function AllCourses() {
@@ -85,7 +85,7 @@ export default function AllCourses() {
                         <Link key={course._id} to={`/courses/${course._id}`} className="course-card">
                             <div className="course-thumbnail">
                                 {course.thumbnail ? (
-                                    <img src={`http://localhost:5000${course.thumbnail}`} alt={course.C_title} />
+                                    <img src={`${BACKEND_URL}${course.thumbnail}`} alt={course.C_title} />
                                 ) : (
                                     <div className="thumbnail-placeholder">
                                         <span>🎓</span>

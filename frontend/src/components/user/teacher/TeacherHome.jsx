@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axiosInstance from '../../common/AxiosInstance';
+import axiosInstance, { BACKEND_URL } from '../../common/AxiosInstance';
 import { useAuth } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import AddCourse from './AddCourse';
+import LiveSessionsManager from './LiveSessionsManager';
 import './Teacher.css';
 
 export default function TeacherHome() {
@@ -90,7 +91,7 @@ export default function TeacherHome() {
                             <div key={course._id} className="teacher-course-card">
                                 <div className="tc-thumb">
                                     {course.thumbnail ? (
-                                        <img src={`http://localhost:5000${course.thumbnail}`} alt={course.C_title} />
+                                        <img src={`${BACKEND_URL}${course.thumbnail}`} alt={course.C_title} />
                                     ) : (
                                         <div className="tc-placeholder">🎓</div>
                                     )}
@@ -122,6 +123,9 @@ export default function TeacherHome() {
                     </div>
                 )}
             </div>
+
+            {/* Live Sessions Manager */}
+            {!loading && courses.length > 0 && <LiveSessionsManager teacherCourses={courses} />}
         </div>
     );
 }

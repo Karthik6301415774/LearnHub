@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/common/NavBar';
 import Home from './components/common/Home';
 import Login from './components/common/Login';
+import ForgotPassword from './components/common/ForgotPassword';
 import Register from './components/common/Register';
 import AllCourses from './components/common/AllCourses';
 import CourseDetail from './components/common/CourseDetail';
@@ -13,11 +14,12 @@ import Certificate from './components/user/student/Certificate';
 import TeacherHome from './components/user/teacher/TeacherHome';
 import ManageCourse from './components/user/teacher/ManageCourse';
 
+import AdminLogin from './components/admin/AdminLogin';
 import AdminHome from './components/admin/AdminHome';
 import AdminAllCourses from './components/admin/AllCourses';
 
 // Protected Route Component
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 
 function ProtectedRoute({ children, allowedRoles }) {
@@ -29,14 +31,26 @@ function ProtectedRoute({ children, allowedRoles }) {
   return children;
 }
 
-function App() {
+// Hide NavBar on admin pages
+function Layout({ children }) {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
   return (
     <>
-      <NavBar />
+      {!isAdminPage && <NavBar />}
+      {children}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Layout>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/courses" element={<AllCourses />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
@@ -65,7 +79,8 @@ function App() {
           element={<ProtectedRoute allowedRoles={['teacher', 'admin']}><ManageCourse /></ProtectedRoute>}
         />
 
-        {/* Admin Routes */}
+        {/* Admin Routes — dedicated login, no NavBar */}
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin"
           element={<ProtectedRoute allowedRoles={['admin']}><AdminHome /></ProtectedRoute>}
@@ -75,7 +90,7 @@ function App() {
           element={<ProtectedRoute allowedRoles={['admin']}><AdminAllCourses /></ProtectedRoute>}
         />
       </Routes>
-    </>
+    </Layout>
   );
 }
 

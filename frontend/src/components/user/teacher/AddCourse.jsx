@@ -4,10 +4,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import './AddCourse.css';
 
-const CATEGORIES = [
-    'Web Development', 'Data Science', 'AI & ML', 'UI/UX Design',
-    'Mobile Dev', 'Cloud Computing', 'Cybersecurity', 'Databases'
-];
+
 
 export default function AddCourse({ onClose, onSuccess }) {
     const { user } = useAuth();
@@ -65,10 +62,14 @@ export default function AddCourse({ onClose, onSuccess }) {
                     <div className="form-row">
                         <div className="form-group">
                             <label>Category *</label>
-                            <select name="C_categories" value={form.C_categories} onChange={handleChange} required>
-                                <option value="">Select category</option>
-                                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                            </select>
+                            <input
+                                type="text"
+                                name="C_categories"
+                                placeholder="e.g. Web Development"
+                                value={form.C_categories}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
                         <div className="form-group">
                             <label>Price (₹) — 0 for Free</label>

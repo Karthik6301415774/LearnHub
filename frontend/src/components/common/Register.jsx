@@ -51,12 +51,33 @@ export default function Register() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Email Address</label>
+                        <label>Email Address *</label>
                         <input
                             type="email"
                             name="email"
                             placeholder="you@example.com"
                             value={form.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Phone Number *</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="e.g. 9876543210"
+                            value={form.phone}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Date of Birth *</label>
+                        <input
+                            type="date"
+                            name="dob"
+                            value={form.dob}
                             onChange={handleChange}
                             required
                         />
